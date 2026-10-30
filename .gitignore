@@ -1,0 +1,12 @@
+# Datos de cliente y locales: nunca en git
+data/
+*.db
+*.sqlite
+*.xlsx
+*.xlsm
+*.docx
+*.msg
+capturas/
+.env
+.env.*
+node_modules/
