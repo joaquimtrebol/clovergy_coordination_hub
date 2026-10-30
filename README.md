@@ -10,7 +10,7 @@ decisiones y un panel de análisis dinámico por rol.
 |---|---|
 | Id de registro | `clovergy-coordination-hub` |
 | Capa | `APPS` |
-| Estado | Especificación: SPEC-002 en «propuesta», pendiente de la firma de G1 del PM |
+| Estado | Especificación: SPEC-002 «aprobada» (G1 firmada por el PM el 30/10/2026); siguiente puerta, G2 |
 | Owner | `joaquimtrebol` |
 | Spec | [`docs/specs/SPEC-002-modulo-seguimiento-coordinacion.md`](docs/specs/SPEC-002-modulo-seguimiento-coordinacion.md) |
 | PRD | `clovergy_pm/docs/prd/gestor-incidencias-monitorizacion.md` (H9–H12) |
@@ -24,7 +24,8 @@ decisiones y un panel de análisis dinámico por rol.
 
 ## Estado
 
-Todavía no hay código. Nada se construye antes de la firma de G1 de la SPEC-002.
+Todavía no hay código. La SPEC-002 está aprobada (G1, 30/10/2026): la construcción empieza en sombra sobre
+el Excel semanal, después de aplicar el bloque 1 de mejoras del análisis (DC-04).
 
 ## Datos
 
