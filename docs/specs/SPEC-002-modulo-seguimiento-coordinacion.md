@@ -12,7 +12,7 @@ puerta: G1
 # SPEC-002 — Módulo de seguimiento y coordinación TE ↔ IT
 
 Grupo Trébol Energía · Transición Energética ↔ IT · Plataforma Clovergy
-Versión 0.2 · 30 de octubre de 2026 · Punto 4 del encargo `00_PROMPT_seguimiento_coordinacion_IT_v1`
+Versión 0.3 · 30 de octubre de 2026 · Punto 4 del encargo `00_PROMPT_seguimiento_coordinacion_IT_v1`
 
 > **Qué es.** El contrato de lo que se construye y de cómo se comprueba: una aplicación ligera que reúne
 > el seguimiento de incidencias (INC), feedback (FB), tickets de IT, reuniones, acuerdos y decisiones,
@@ -30,7 +30,7 @@ Versión 0.2 · 30 de octubre de 2026 · Punto 4 del encargo `00_PROMPT_seguimie
 
 ## 1. Resumen
 
-Una aplicación web ligera, con el aspecto y los patrones de CLOVEX, que en su **fase 1 vive sola**: lee
+Una aplicación web ligera, con la guía de diseño de la webapp de `clovergy_pm` (§3.1), que en su **fase 1 vive sola**: lee
 las entradas (formulario, OneNote, CLOVEX, Excel de feedback) por conectores, guarda lo que es de TE
 (triaje, seguimiento, notas, acuerdos, decisiones) y enseña un **panel de análisis dinámico** con filtros
 cruzados y detalle, más un **modo reunión** donde varias personas anotan a la vez. En la **fase 2** se
@@ -124,12 +124,30 @@ con los cuatro roles (G2).
 | Una sola capa (`INGESTION → DATA → API → ANALYTICS → APPS`) | Sí | Capa `APPS` (y su API propia). No lee telemetría ni datos de lecturas de Clovergy |
 | No duplicar lógica que ya existe en otra capa o repo | Sí | Las reglas de deducción de `completar` y la fórmula de «Paso a CLOVEX» se **portan** con las mismas pruebas, y el script queda como referencia hasta G2; el tablero de `/clovex` no se rehace |
 | Nada fijado por cliente | Sí | Cuentas, productos de CLOVEX, rutas y equipo son tablas de configuración |
-| UI con los tokens de diseño | **Excepción a decidir** | El encargo pide el diseño de CLOVEX. Se usa una capa de tema: tokens de CLOVEX si IT los facilita (P-02); mientras, los de `clovergy_design`. Ningún color fijado en los componentes |
+| UI con los tokens de diseño | Sí | Sigue la guía de diseño de la webapp de `clovergy_pm` (§3.1), decidido por el PM el 30/10/2026. Capa de tema con los tokens `clovergy-*`: si en la fase 2 hay que encajar en CLOVEX, se cambia el tema, no los componentes |
 | Idioma | Sí | UI y documentos en español; código, identificadores y ficheros en inglés |
 | Repo ≠ id | Sí | Si se crea repo: guion bajo en el repo, guion en el id de registro |
-| Dependencias mínimas | Sí | Framework web, una librería de gráficos, base de datos ligera; cada una con versión y motivo en el README |
+| Dependencias mínimas | Sí | Las de la webapp de `clovergy_pm` (Next.js, Tailwind, `lucide-react`) más una librería de gráficos y una base de datos ligera; cada una con versión y motivo en el README |
 | Lo determinista va a prueba o CI | Sí | Reglas 1–23 con prueba (§8.3) |
 | Solo lectura en CLOVEX | Sí | El conector usa el proxy `clovex-it-lectura` o, en fase 2, una cuenta de servicio de solo lectura |
+
+### 3.1 Guía de diseño (la de la webapp de `clovergy_pm`)
+
+Fuente: `clovergy_design/kit/GUIA-UXUI.md` y `tokens.json` (v2.0.0), tal como los aplica la webapp de
+`clovergy_pm` (`webapp/tailwind.config.js`, `webapp/styles/globals.css`, sección «Diseño» de
+`webapp/README.md`, rediseño de CLV-902). Se copian los tokens, no se inventan colores.
+
+| Elemento | Regla |
+|---|---|
+| Marca | Barra superior teal `#00738c` de 70 px con el logo blanco oficial; salvia `#97a675` como acento |
+| Superficies y texto | Fondo `#f8f8fb`, superficie `#ffffff`, texto `#495057`, texto secundario `#74788d`, borde `#dde4ec` |
+| Estados | ok `#34c38f`, info `#50a5f1`, aviso `#f1b44c`, peligro `#f46a6a`, en insignias y avisos. «Le toca a» usa estos y los de marca, no colores propios |
+| Tipografía | Poppins a 14 px para la interfaz; Roboto Mono con cifras tabulares para ids (INC-NN, tickets) y métricas; cargadas con `<link>`, nunca `@import` |
+| Iconos | `lucide-react` a 16 px; sin emojis ni pictogramas |
+| Navegación | Un solo menú lateral de 240 px por áreas (Panel, Bandeja, Lista, Reunión, Decisiones, Fuentes); por debajo de `lg` es un cajón que se cierra al navegar |
+| Tablas | Dentro de tarjetas con scroll propio (`overflow-x-auto`); la página no desborda a 390 px |
+| Accesibilidad | Foco visible teal, `aria-current` en la sección activa, `aria-label` en botones de solo icono, objetivos de 44 px en móvil, WCAG 2.1 AA |
+| Comprobación | Una prueba como `scripts/webapp-interfaz.test.js` de `clovergy_pm` que verifica estas reglas en cada ejecución, y una revisión a 390 px |
 
 ## 4. Interfaz y contrato
 
@@ -238,7 +256,7 @@ Se prepara un mock navegable con datos sintéticos antes de G2; el enlace se añ
 | H-7 · Acta y anexo con formato GTE | AC-13 | S | Bajo | H-6 | Acta revisada por el PM |
 | H-8 · Roles y permisos | AC-10 | M | Medio (autenticación, P-04) | H-2 | Prueba por rol |
 | H-9 · Importar formulario y OneNote | AC-2 | S | Bajo | H-2 | Prueba de idempotencia |
-| H-10 · Tema con los tokens de CLOVEX | — | S | Medio (P-02) | H-4 | Revisión visual con IT |
+| H-10 · Tema y prueba de la guía de diseño (§3.1) | — | S | Bajo | H-4 | Prueba de interfaz en verde y revisión a 390 px |
 
 Prioridad por valor y dependencia: H-1 → H-2 → H-3 → H-4 → H-6 → H-7 (lo que se enseña en G2); luego
 H-5, H-8, H-9, H-10. Las tallas son una propuesta; las corrige quien construya.
@@ -306,6 +324,7 @@ H-5, H-8, H-9, H-10. Las tallas son una propuesta; las corrige quien construya.
 |---|---|---|
 | 30/10/2026 | v0.1 · propuesta inicial para G1 | — |
 | 30/10/2026 | v0.2 · P-01 decidida por el PM: repo nuevo `clovergy_coordination_hub` | — |
+| 30/10/2026 | v0.3 · P-02 decidida por el PM: guía de diseño de la webapp de `clovergy_pm` (nueva §3.1) | PR #1 |
 
 ## 12. Seguridad *(obligatoria antes de G3)*
 
@@ -340,7 +359,7 @@ H-5, H-8, H-9, H-10. Las tallas son una propuesta; las corrige quien construya.
 | ID | Pregunta | De quién | Qué bloquea | Recomendación |
 |---|---|---|---|---|
 | P-01 | ~~¿Dónde vive el código?~~ **Decidida el 30/10/2026 por el PM: repo nuevo**, con contrato pensado para encajar en CLOVEX en fase 2. Nombre decidido el mismo día: `clovergy_coordination_hub` (id de registro `clovergy-coordination-hub`). Su creación se pide aparte (no se crea nada sin permiso) | PM | — | — |
-| P-02 | ¿IT puede facilitar la guía de diseño de CLOVEX (colores, tipografía, componentes) y su tecnología? | IT | H-10 y el encaje en fase 2 | Pedirlo en la próxima reunión de IT |
+| P-02 | ~~¿Qué guía de diseño se sigue?~~ **Decidida el 30/10/2026 por el PM: la de la webapp de `clovergy_pm` (§3.1).** Para el encaje en CLOVEX de la fase 2 seguirá haciendo falta saber su tecnología (pregunta a IT) | PM | — | — |
 | P-03 | ¿Quién de IT es el responsable de la spec y valida el encaje en CLOVEX? | Coordinador de IT | G3 | — |
 | P-04 | ¿Autenticación con Microsoft Entra (cuentas de la empresa)? | TI | H-8 | Sí, si TI lo permite |
 | P-05 | ¿Hay un servidor interno donde alojar la fase 1, o se prueba en el PC del PM? | TI | Despliegue | Probar en el PC hasta G2 |
