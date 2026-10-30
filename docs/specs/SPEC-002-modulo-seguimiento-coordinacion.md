@@ -1,30 +1,30 @@
 ---
 id: SPEC-002
 titulo: "Módulo de seguimiento y coordinación TE ↔ IT"
-estado: propuesta   # borrador | propuesta | aprobada | implementada | obsoleta
+estado: aprobada   # borrador | propuesta | aprobada | implementada | obsoleta
 fecha: 2026-10-30
 prd: clovergy_pm/docs/prd/gestor-incidencias-monitorizacion.md (H9–H12)
-issue: por abrir en clovergy_pm al firmar G1 (etiqueta project/clovergy-pm)
+issue: clovergy_pm#283 (CLV-903, etiqueta project/clovergy-coordination-hub)
 responsable_it: por nombrar (pregunta abierta P-03)
-puerta: G1
+puerta: G2   # G1 firmada por el PM el 2026-10-30
 ---
 
 # SPEC-002 — Módulo de seguimiento y coordinación TE ↔ IT
 
 Grupo Trébol Energía · Transición Energética ↔ IT · Plataforma Clovergy
-Versión 0.3 · 30 de octubre de 2026 · Punto 4 del encargo `00_PROMPT_seguimiento_coordinacion_IT_v1`
+Versión 1.0 · 30 de octubre de 2026 · **Aprobada: G1 firmada por el PM** · Punto 4 del encargo `00_PROMPT_seguimiento_coordinacion_IT_v1`
 
 > **Qué es.** El contrato de lo que se construye y de cómo se comprueba: una aplicación ligera que reúne
 > el seguimiento de incidencias (INC), feedback (FB), tickets de IT, reuniones, acuerdos y decisiones,
 > con un panel de análisis dinámico. Responde «qué se construye y cómo se verifica»; el porqué está en el
 > análisis `01_ANALISIS_entradas_roles_reunion_v1` y en el PRD.
 >
-> **Ciclo.** Explorar → proponer (este estado, `propuesta`) → **revisión del contrato por el PM (firma de
-> G1, `aprobada`)** → aplicar → verificar → sincronizar esta spec con lo construido (`implementada`) →
+> **Ciclo.** Explorar → proponer → **revisión del contrato por el PM (firma de G1, `aprobada`: este
+> estado, desde el 30/10/2026)** → aplicar → verificar → sincronizar esta spec con lo construido (`implementada`) →
 > archivar. Nada se construye sin la firma de G1.
 >
-> **Dónde vivirá.** Cuando se firme, esta spec se copia a `docs/specs/` del repo que elija el PM (P-01) y
-> sigue viva allí, revisada por PR. Esta copia de la carpeta del proyecto es la de revisión.
+> **Dónde vive.** En `docs/specs/` de `clovergy_coordination_hub` (P-01), revisada por PR. La copia de la
+> carpeta del proyecto es la de lectura y se regenera desde esta.
 
 ---
 
@@ -50,8 +50,8 @@ con los cuatro roles (G2).
   la plataforma y de sus módulos integrados, más el feedback que los origina.
 - **No reconstruye la webapp de `clovergy_pm`**: la página `/clovex` sigue siendo la vista del portfolio en
   solo lectura; el módulo puede enlazarla, no la duplica.
-- **No usa Power BI como pieza obligatoria.** Publica sus datos para quien quiera conectarlo, pero el panel
-  es propio (§4.3); usar Power BI exigiría licencias que no se dan por supuestas.
+- **No usa Power BI** (P-06, decidida por el PM el 30/10/2026): el panel es propio (§4.3) en todas las
+  fases y no se construye ninguna salida pensada para Power BI.
 
 ## 2. Comportamiento
 
@@ -191,7 +191,6 @@ Se prepara un mock navegable con datos sintéticos antes de G2; el enlace se añ
 | **Agenda de la reunión** | Sale y entra | La misma tabla que `Agenda_reunion_IT_AAAA-MM-DD.xlsx` (análisis, M14), para que el script y el módulo convivan |
 | **API REST** `/api/v1/` | Sale | Lectura de entradas, tickets, relaciones, reuniones, acuerdos, decisiones y cifras; escritura solo de lo que es del módulo (notas, triaje, relaciones, acuerdos), con el rol |
 | **Servidor MCP** del módulo | Sale | Herramientas de lectura (`list_entries`, `get_entry`, `list_agreements`, `dashboard_figures`) y, con permiso, `add_note`; nunca toca CLOVEX |
-| **Datos para análisis externo** | Sale | Exportación de las tablas en CSV o un endpoint de solo lectura que Power BI Desktop pueda leer, si se decide usarlo |
 | **Acta y anexo** | Sale | Word con la plantilla corporativa y Excel; se generan, no se envían |
 
 ## 5. Integración con datos Clovergy
@@ -310,10 +309,10 @@ H-5, H-8, H-9, H-10. Las tallas son una propuesta; las corrige quien construya.
 
 | Documento | Dónde | Estado |
 |---|---|---|
-| README con ficha, ámbito, arranque y dependencias | Raíz de `clovergy_coordination_hub` | Pendiente |
-| `AGENTS.md` y `CLAUDE.md` que lo importa | Raíz del repo | Pendiente |
-| Esta spec, viva | `docs/specs/` del repo | Propuesta (esta copia) |
-| ADR de dónde vive el módulo y quién es el registro maestro | `docs/decisions/` | Pendiente de P-01 y DC-05 |
+| README con ficha, ámbito, arranque y dependencias | Raíz de `clovergy_coordination_hub` | Hecho (PR #1); arranque y dependencias al construir |
+| `AGENTS.md` y `CLAUDE.md` que lo importa | Raíz del repo | Hecho (PR #1) |
+| Esta spec, viva | `docs/specs/` del repo | Aprobada (G1, 30/10/2026) |
+| ADR de dónde vive el módulo y quién es el registro maestro | `docs/decisions/` | Por escribir: P-01 y DC-05 ya decididas |
 | Manual de uso de una página por rol | `docs/` | Pendiente |
 | Registro de prompts del trabajo con agentes | `docs/prompts.md` | Pendiente |
 | Actualización del flujo de revisiones semanales | Carpeta del proyecto | Al pasar a maestro |
@@ -325,6 +324,7 @@ H-5, H-8, H-9, H-10. Las tallas son una propuesta; las corrige quien construya.
 | 30/10/2026 | v0.1 · propuesta inicial para G1 | — |
 | 30/10/2026 | v0.2 · P-01 decidida por el PM: repo nuevo `clovergy_coordination_hub` | — |
 | 30/10/2026 | v0.3 · P-02 decidida por el PM: guía de diseño de la webapp de `clovergy_pm` (nueva §3.1) | PR #1 |
+| 30/10/2026 | v1.0 · **G1 firmada por el PM**: estado `aprobada`. Decididas P-06 (solo panel propio; se quita la salida «Datos para análisis externo») y DC-05 (registro maestro repartido). DC-01…04 del análisis, decididas el mismo día. P-03…P-05 siguen abiertas para IT y no bloquean G1 | clovergy_pm#283 |
 
 ## 12. Seguridad *(obligatoria antes de G3)*
 
@@ -363,5 +363,5 @@ H-5, H-8, H-9, H-10. Las tallas son una propuesta; las corrige quien construya.
 | P-03 | ¿Quién de IT es el responsable de la spec y valida el encaje en CLOVEX? | Coordinador de IT | G3 | — |
 | P-04 | ¿Autenticación con Microsoft Entra (cuentas de la empresa)? | TI | H-8 | Sí, si TI lo permite |
 | P-05 | ¿Hay un servidor interno donde alojar la fase 1, o se prueba en el PC del PM? | TI | Despliegue | Probar en el PC hasta G2 |
-| P-06 | ¿Se quiere Power BI además del panel propio, y hay licencias? | PM | Exportación para análisis externo | Panel propio; exportar para Power BI solo si ya hay licencias |
-| DC-05 | ¿Quién es el registro maestro de INC y FB a medio plazo: este módulo o la página de incidencias del portal Clovergy (PRD, D4)? | PM | La salida de la sombra | Este módulo para lo que va a IT; el portal para las incidencias operativas del cliente, enlazadas por ID |
+| P-06 | ~~¿Se quiere Power BI además del panel propio?~~ **Decidida el 30/10/2026 por el PM: solo panel propio**, sin salida para Power BI en ninguna fase | PM | — | — |
+| DC-05 | ~~¿Quién es el registro maestro de INC y FB a medio plazo?~~ **Decidida el 30/10/2026 por el PM: reparto.** Este módulo es el maestro de lo que va a IT; la página de incidencias del portal Clovergy (PRD, D4), de las incidencias operativas del cliente; se enlazan por ID | PM | — | — |
